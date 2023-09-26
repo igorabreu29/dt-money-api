@@ -1,7 +1,7 @@
 import fastify from "fastify";
 import cors from '@fastify/cors'
+import { transactionRouter } from "./http/controllers/route";
 
-import { transactionRouter } from "./routes/transactions";
 
 const app = fastify()
 
