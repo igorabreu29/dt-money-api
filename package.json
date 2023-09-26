@@ -1,0 +1,27 @@
+{
+  "name": "dt-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server",
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.4.8",
+    "prisma": "^5.1.1",
+    "tsup": "^7.2.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.2"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.3.0",
+    "@prisma/client": "^5.1.1",
+    "fastify": "^4.21.0",
+    "zod": "^3.21.4"
+  }
+}
