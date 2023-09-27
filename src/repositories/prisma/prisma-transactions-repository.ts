@@ -1,12 +1,12 @@
 import { Transaction } from "@prisma/client";
 import { prisma } from "../../database/prisma";
-import { TransactionRepository } from "../transaction-repository";
+import { CreateTransactionData, TransactionRepository } from "../transaction-repository";
 
 export class PrismaTransactionRepository implements TransactionRepository {
-    async create(data: Transaction): Promise<Transaction> {
-        const transactionData = await prisma.transaction.create({data})
+    async create(data: CreateTransactionData): Promise<Transaction> {
+        const transaction = await prisma.transaction.create({data})
 
-        return transactionData
+        return transaction
     }
 
 
@@ -30,10 +30,10 @@ export class PrismaTransactionRepository implements TransactionRepository {
         return findTransactionByDescription
     }   
 
-    async findMany(): Promise<Transaction[]> {
-        const transactionsData = await prisma.transaction.findMany()
+    async findMany() {
+        const transactions = await prisma.transaction.findMany()
 
-        return transactionsData
+        return transactions
     }
 
     async searchMany(query: string) {
