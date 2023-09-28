@@ -34,7 +34,6 @@ describe('create transaction', () => {
         })
 
         const { transactions } = await searchTransactionsUseCase.execute('Script')
-        console.log(transactions)
         
         expect(transactions).toHaveLength(2)
         expect(transactions).toEqual([

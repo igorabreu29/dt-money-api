@@ -1,5 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-    test: {}
+    test: {
+        environmentMatchGlobs: [['src/http/controllers/**', 'prisma']]
+    }
 })
