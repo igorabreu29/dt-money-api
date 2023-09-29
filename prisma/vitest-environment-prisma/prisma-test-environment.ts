@@ -21,7 +21,6 @@ export default <Environment> {
     async setup() {
         const file = randomUUID()
         const databaseUrl = generateDatabaseURL(file)
-        const databaseUrlSecondPart = databaseUrl.slice(6)
 
         process.env.DATABASE_URL = databaseUrl
 
