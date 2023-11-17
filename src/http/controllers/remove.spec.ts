@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from 'supertest'
 
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../libs/prisma";
 import { app } from "../../app";
 
 describe('remove transaction', () => {

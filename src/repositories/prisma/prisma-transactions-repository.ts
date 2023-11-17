@@ -1,5 +1,5 @@
 import { Transaction } from "@prisma/client";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../libs/prisma";
 import { CreateTransactionData, TransactionRepository } from "../transaction-repository";
 
 export class PrismaTransactionRepository implements TransactionRepository {

@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import request from 'supertest'
 
 import { app } from "../../app";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../libs/prisma";
 
 describe('list all transactions', () => {
     beforeAll(async () => await app.ready())

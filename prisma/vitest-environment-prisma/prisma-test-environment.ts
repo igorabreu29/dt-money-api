@@ -4,7 +4,7 @@ import fs from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { Environment } from 'vitest'
-import { prisma } from '../../src/database/prisma'
+import { prisma } from '../../src/libs/prisma'
 
 function generateDatabaseURL(file: string) {
     if (!process.env.DATABASE_URL) {
