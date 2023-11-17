@@ -4,16 +4,16 @@ import { CreateTransactionUseCase } from "./create";
 import { TransactionAlreadyExistError } from "./errors/transaction-already-exist-error";
 
 let transactionRepository: InMemoryTransactionsRepository
-let createTransactionUseCase: CreateTransactionUseCase
+let sut: CreateTransactionUseCase
 
 describe('create transaction', () => {
     beforeEach(() => {
         transactionRepository = new InMemoryTransactionsRepository()
-        createTransactionUseCase = new CreateTransactionUseCase(transactionRepository)
+        sut = new CreateTransactionUseCase(transactionRepository)
     })
 
     it('should be able to create a transaction', async () => {
-        const { transaction } = await createTransactionUseCase.execute({
+        const { transaction } = await sut.execute({
             description: 'test-description',
             category: 'testing',
             price: 100,
@@ -30,14 +30,14 @@ describe('create transaction', () => {
     })
 
     it('should not be able to create a transaction', async () => {
-        await createTransactionUseCase.execute({
+        await sut.execute({
             description: 'test-description',
             category: 'testing',
             price: 100,
             type: 'income'
         })
 
-        await expect(async () => await createTransactionUseCase.execute({
+        await expect(async () => await sut.execute({
             description: 'test-description',
             category: 'test',
             price: 200,

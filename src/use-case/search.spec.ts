@@ -3,12 +3,12 @@ import { InMemoryTransactionsRepository } from "../repositories/in-memory/in-mem
 import { SearchTransactionsUseCase } from "./search";
 
 let transactionRepository: InMemoryTransactionsRepository
-let searchTransactionsUseCase: SearchTransactionsUseCase
+let sut: SearchTransactionsUseCase
 
 describe('create transaction', () => {
     beforeEach(() => {
         transactionRepository = new InMemoryTransactionsRepository()
-        searchTransactionsUseCase = new SearchTransactionsUseCase(transactionRepository)
+        sut = new SearchTransactionsUseCase(transactionRepository)
     })
 
     it('should be able to search for transactions', async () => {
@@ -33,7 +33,7 @@ describe('create transaction', () => {
             type: 'outcome'
         })
 
-        const { transactions } = await searchTransactionsUseCase.execute('Script')
+        const { transactions } = await sut.execute('Script')
         
         expect(transactions).toHaveLength(2)
         expect(transactions).toEqual([

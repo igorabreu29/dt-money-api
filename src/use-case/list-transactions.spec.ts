@@ -3,12 +3,12 @@ import { InMemoryTransactionsRepository } from "../repositories/in-memory/in-mem
 import { ListTransactionsUseCase } from "./list-transactions";
 
 let transactionRepository: InMemoryTransactionsRepository
-let listTransactionsUseCase: ListTransactionsUseCase
+let sut: ListTransactionsUseCase
 
 describe('create transaction', () => {
     beforeEach(() => {
         transactionRepository = new InMemoryTransactionsRepository()
-        listTransactionsUseCase = new ListTransactionsUseCase(transactionRepository)
+        sut = new ListTransactionsUseCase(transactionRepository)
     })
 
     it('should be able to create a transaction', async () => {        
@@ -26,7 +26,7 @@ describe('create transaction', () => {
             type: 'income'
         })
 
-        const { transactions } = await listTransactionsUseCase.execute()
+        const { transactions } = await sut.execute()
 
         expect(transactions).toHaveLength(2)
         expect(transactions).toEqual([

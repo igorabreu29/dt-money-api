@@ -4,12 +4,12 @@ import { RemoveTransactionUseCase } from "./remove";
 import { ResourceNotFoundError } from "./errors/resourse-not-found-error";
 
 let transactionRepository: InMemoryTransactionsRepository
-let removeTransactionUseCase: RemoveTransactionUseCase
+let sut: RemoveTransactionUseCase
 
 describe('remove transaction', () => {
     beforeEach(() => {
         transactionRepository = new InMemoryTransactionsRepository()
-        removeTransactionUseCase = new RemoveTransactionUseCase(transactionRepository)
+        sut = new RemoveTransactionUseCase(transactionRepository)
     })
 
     it('should be able to remove a transaction', async() => {
@@ -27,7 +27,7 @@ describe('remove transaction', () => {
             type: 'outcome'
         })
         
-        await removeTransactionUseCase.execute(transaction.id)
+        await sut.execute(transaction.id)
 
         expect(transactionRepository.transactions).toHaveLength(1)
         expect(transactionRepository.transactions).toEqual([
@@ -48,7 +48,7 @@ describe('remove transaction', () => {
             type: 'outcome'
         })
 
-        await expect(async () => await removeTransactionUseCase.execute('id-not-exist'))
+        await expect(async () => await sut.execute('id-not-exist'))
         .rejects
         .toBeInstanceOf(ResourceNotFoundError)
     })
