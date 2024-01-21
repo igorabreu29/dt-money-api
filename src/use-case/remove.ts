@@ -1,22 +1,23 @@
+import { Either, left, right } from "../core/either";
 import { TransactionRepository } from "../repositories/transaction-repository";
 import { ResourceNotFoundError } from "./errors/resourse-not-found-error";
 
-interface RemoveTransactionUseCaseResponse {
-    message: string
-}
+type RemoveTransactionUseCaseResponse = Either<ResourceNotFoundError, {}>
 
 export class RemoveTransactionUseCase {
     constructor(
         private transactionRepository: TransactionRepository
     ) {}
 
-    async execute(id: string): Promise<void> {
+    async execute(id: string): Promise<RemoveTransactionUseCaseResponse> {
         const transactionExist = await this.transactionRepository.findById(id) 
 
         if (!transactionExist) {
-            throw new ResourceNotFoundError()
+            return left(new ResourceNotFoundError())
         }
 
         await this.transactionRepository.remove(transactionExist.id)
+
+        return right({})
     }
 }

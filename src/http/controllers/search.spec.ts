@@ -28,7 +28,7 @@ describe('search transactions', () => {
         })
 
         const response = await request(app.server)
-            .get('/transactions/search?q=type')
+            .get('/transactions/search?q=type&_order=desc&_sort=startDate')
 
         expect(response.statusCode).toEqual(200)
         expect(response.body.transactions).toEqual([

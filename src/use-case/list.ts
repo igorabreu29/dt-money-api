@@ -1,9 +1,8 @@
 import { Transaction } from "@prisma/client"
 import { TransactionRepository } from "../repositories/transaction-repository"
+import { Either, right } from "../core/either"
 
-interface ListTransactionsUseCaseResponse {
-    transactions: Transaction[]
-} 
+type ListTransactionsUseCaseResponse = Either<null, { transactions: Transaction[] }>
 
 export class ListTransactionsUseCase {
     constructor (
@@ -13,8 +12,8 @@ export class ListTransactionsUseCase {
     async execute(): Promise<ListTransactionsUseCaseResponse> {
         const transactions = await this.transactionRepository.findMany()
 
-        return {
+        return right({
             transactions,
-        }
+        })
     }
 }

@@ -5,7 +5,7 @@ import { randomUUID } from "crypto";
 export class InMemoryTransactionsRepository implements TransactionRepository {
     public transactions: Transaction[] = []
 
-    async create(data: CreateTransactionData): Promise<Transaction> {
+    async create(data: CreateTransactionData) {
         const createTransaction: Transaction = {
             id: randomUUID(),
             category: data.category,
@@ -21,18 +21,26 @@ export class InMemoryTransactionsRepository implements TransactionRepository {
     }
 
 
-    async findById(id: string): Promise<Transaction> {
+    async findById(id: string) {
         const findTransactionById = this.transactions.find(transaction => {
             return transaction.id === id
         })
 
+        if (!findTransactionById) {
+            return null
+        }
+
         return findTransactionById
     }
 
-   async findByDescription (description: string): Promise<Transaction> {
+   async findByDescription (description: string) {
         const findTransactionByDescription = this.transactions.find(transaction => {
             return transaction.description === description
         })
+
+        if (!findTransactionByDescription) {
+            return null
+        }
 
         return findTransactionByDescription
     }   
@@ -42,7 +50,9 @@ export class InMemoryTransactionsRepository implements TransactionRepository {
     }
 
     async searchMany(query: string) {
-        const searchManyTransactions = this.transactions.filter(transaction => {
+        const searchManyTransactions = this.transactions.sort((a, b) => {
+            return b.startDate.getTime() - a.startDate.getTime()
+        }).filter(transaction => {
             return transaction.description.includes(query)
         })
 

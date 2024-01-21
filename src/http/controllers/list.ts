@@ -5,10 +5,10 @@ export async function list(req: FastifyRequest, res: FastifyReply) {
     const useCase = makeListTransactionsUseCase()
     
     try {
-        const { transactions } = await useCase.execute()
+        const result = await useCase.execute()
 
         return res.status(200).send({
-            transactions
+            transactions: result.value?.transactions
         })
     } catch(err) { 
         return err

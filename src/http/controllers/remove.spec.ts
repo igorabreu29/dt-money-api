@@ -28,7 +28,7 @@ describe('remove transaction', () => {
         })
 
         const response = await request(app.server)
-        .delete(`/transactions/${transaction.id}`)
+            .delete(`/transactions/${transaction.id}`)
 
         expect(response.statusCode).toEqual(204)
     })

@@ -12,24 +12,7 @@ describe('create transaction', () => {
         sut = new CreateTransactionUseCase(transactionRepository)
     })
 
-    it('should be able to create a transaction', async () => {
-        const { transaction } = await sut.execute({
-            description: 'test-description',
-            category: 'testing',
-            price: 100,
-            type: 'income'
-        })
-
-        expect(transaction).toEqual(
-            expect.objectContaining({
-                id: expect.any(String)
-            })
-        )
-
-        expect(transaction.description).toEqual('test-description')
-    })
-
-    it('should not be able to create a transaction', async () => {
+    it('should not be able to create a transaction with the same description', async () => {
         await sut.execute({
             description: 'test-description',
             category: 'testing',
@@ -37,11 +20,30 @@ describe('create transaction', () => {
             type: 'income'
         })
 
-        await expect(async () => await sut.execute({
+        const result = await sut.execute({
             description: 'test-description',
-            category: 'test',
-            price: 200,
-            type: 'outcome'
-        })).rejects.toBeInstanceOf(TransactionAlreadyExistError)
+            category: 'testing',
+            price: 100,
+            type: 'income'
+        })
+
+        expect(result.value).toBeInstanceOf(TransactionAlreadyExistError)
+    })
+
+    it('should be able to create a transaction', async () => {
+        const result = await sut.execute({
+            description: 'test-description',
+            category: 'testing',
+            price: 100,
+            type: 'income'
+        })
+
+        expect(result.isRight()).toBe(true)
+        expect(result.value).toMatchObject({
+            transaction: expect.objectContaining({
+                id: expect.any(String),
+                description: 'test-description'
+            })
+        })
     })
 })

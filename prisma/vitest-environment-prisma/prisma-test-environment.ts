@@ -1,10 +1,10 @@
 import 'dotenv/config'
 
-import fs from 'node:fs/promises'
 import { execSync } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { Environment } from 'vitest'
 import { prisma } from '../../src/libs/prisma'
+import fs from 'node:fs/promises'
 
 function generateDatabaseURL(file: string) {
     if (!process.env.DATABASE_URL) {
@@ -21,6 +21,7 @@ export default <Environment> {
     async setup() {
         const file = randomUUID()
         const databaseUrl = generateDatabaseURL(file)
+        const fileUrl = databaseUrl.slice(7)
 
         process.env.DATABASE_URL = databaseUrl
 

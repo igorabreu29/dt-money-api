@@ -10,7 +10,7 @@ export class PrismaTransactionRepository implements TransactionRepository {
     }
 
 
-    async findById(id: string): Promise<Transaction> {
+    async findById(id: string) {
         const findTransaction = await prisma.transaction.findUniqueOrThrow({
             where: {
                 id
@@ -20,12 +20,12 @@ export class PrismaTransactionRepository implements TransactionRepository {
         return findTransaction
    }
 
-   async findByDescription (description: string): Promise<Transaction> {
+   async findByDescription (description: string) {
         const findTransactionByDescription = await prisma.transaction.findFirst({
-                    where: {
-                        description
-                    }
-                })
+            where: {
+                description
+            }
+        })
 
         return findTransactionByDescription
     }   
@@ -42,6 +42,9 @@ export class PrismaTransactionRepository implements TransactionRepository {
                 description: {
                     contains: query
                 }
+            },
+            orderBy: {
+                startDate: 'desc'
             }
         })
 

@@ -41,15 +41,8 @@ describe('remove transaction', () => {
     })
 
     it('should not be able to remove transaction that not exist', async () => {
-        await transactionRepository.create({
-            description: 'testing-dev',
-            category: 'testing',
-            price: 30,
-            type: 'outcome'
-        })
+        const result = await sut.execute('id-not-existing')
 
-        await expect(async () => await sut.execute('id-not-exist'))
-        .rejects
-        .toBeInstanceOf(ResourceNotFoundError)
+        expect(result.value).toBeInstanceOf(ResourceNotFoundError)
     })
 })

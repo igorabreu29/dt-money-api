@@ -8,10 +8,10 @@ export interface CreateTransactionData {
 }
 
 export interface TransactionRepository {
-    findByDescription: (description: string) => Promise<Transaction>
-    findById: (id: string) => Promise<Transaction>
+    findByDescription: (description: string) => Promise<Transaction | null>
+    findById: (id: string) => Promise<Transaction | null>
     create: (data: CreateTransactionData) => Promise<Transaction>
     findMany: () => Promise<Transaction[]>
     remove: (id: string) => Promise<void>
-    searchMany: (query: string) => Promise<Transaction[]> 
+    searchMany: (query: string, orderBy?: string, order?: string) => Promise<Transaction[]> 
 }

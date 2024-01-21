@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryTransactionsRepository } from "../repositories/in-memory/in-memory-transactions-repository";
 import { SearchTransactionsUseCase } from "./search";
+import { resolve } from "dns";
 
 let transactionRepository: InMemoryTransactionsRepository
 let sut: SearchTransactionsUseCase
@@ -33,10 +34,10 @@ describe('create transaction', () => {
             type: 'outcome'
         })
 
-        const { transactions } = await sut.execute('Script')
+        const result = await sut.execute({ query: 'Script' })
         
-        expect(transactions).toHaveLength(2)
-        expect(transactions).toEqual([
+        expect(result.value?.transactions).toHaveLength(2)
+        expect(result.value?.transactions).toEqual([
             expect.objectContaining({
                 description: 'TypeScript'
             }),
@@ -46,4 +47,33 @@ describe('create transaction', () => {
             }),
         ])
     }) 
+
+    it ('should be able to search for transactions and get in order of more recent', async () => {
+        await transactionRepository.create({
+            description: 'TypeScript',
+            category: 'test',
+            price: 40,
+            type: 'outcome'
+        })
+
+        await new Promise(resolve => setTimeout(resolve, 200))
+
+        await transactionRepository.create({
+            description: 'JavaScript',
+            category: 'test',
+            price: 40,
+            type: 'outcome'        
+        })
+
+        const result = await sut.execute({ query: 'Script' })  
+
+        expect(result.value?.transactions).toEqual([
+            expect.objectContaining({
+                description: 'JavaScript'
+            }),
+            expect.objectContaining({
+                description: 'TypeScript'
+            }),
+        ])
+    })
 })

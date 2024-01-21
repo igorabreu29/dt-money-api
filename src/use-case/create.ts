@@ -1,5 +1,6 @@
 import { Transaction } from "@prisma/client";
 import { TransactionRepository } from "../repositories/transaction-repository";
+import { Either, left, right } from "../core/either";
 import { TransactionAlreadyExistError } from "./errors/transaction-already-exist-error";
 
 interface CreateTransactionUseCaseRequest {
@@ -9,9 +10,9 @@ interface CreateTransactionUseCaseRequest {
     category: string
 }
 
-interface CreateTransactionUseCaseResponse {
+type CreateTransactionUseCaseResponse = Either<TransactionAlreadyExistError, {
     transaction: Transaction
-}
+}>
 
 export class CreateTransactionUseCase {
     constructor(
@@ -22,7 +23,7 @@ export class CreateTransactionUseCase {
         const transactionAlreadyExist = await this.transactionRepository.findByDescription(description)
 
         if (transactionAlreadyExist) {
-            throw new TransactionAlreadyExistError()
+            return left(new TransactionAlreadyExistError())
         }
 
         const transaction = await this.transactionRepository.create({
@@ -32,8 +33,8 @@ export class CreateTransactionUseCase {
             type
         })
 
-        return {
+        return right({
             transaction
-        }
+        })
     }
 }

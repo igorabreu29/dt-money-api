@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { InMemoryTransactionsRepository } from "../repositories/in-memory/in-memory-transactions-repository";
-import { ListTransactionsUseCase } from "./list-transactions";
+import { ListTransactionsUseCase } from "./list";
 
 let transactionRepository: InMemoryTransactionsRepository
 let sut: ListTransactionsUseCase
@@ -26,10 +26,10 @@ describe('create transaction', () => {
             type: 'income'
         })
 
-        const { transactions } = await sut.execute()
+        const result = await sut.execute()
 
-        expect(transactions).toHaveLength(2)
-        expect(transactions).toEqual([
+        expect(result.value?.transactions).toHaveLength(2)
+        expect(result.value?.transactions).toEqual([
             expect.objectContaining({
                 description: 'test-description'
             }),
