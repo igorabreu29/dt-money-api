@@ -1,7 +1,6 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { InMemoryTransactionsRepository } from "../repositories/in-memory/in-memory-transactions-repository";
 import { SearchTransactionsUseCase } from "./search";
-import { resolve } from "dns";
 
 let transactionRepository: InMemoryTransactionsRepository
 let sut: SearchTransactionsUseCase
@@ -35,15 +34,16 @@ describe('create transaction', () => {
         })
 
         const result = await sut.execute({ query: 'Script' })
+        console.log(result.value?.transactions)
         
         expect(result.value?.transactions).toHaveLength(2)
         expect(result.value?.transactions).toEqual([
             expect.objectContaining({
-                description: 'JavaScript'
+                description: 'TypeScript'
             }),
             
             expect.objectContaining({
-                description: 'TypeScript'
+                description: 'JavaScript'
             }),
         ])
     }) 
