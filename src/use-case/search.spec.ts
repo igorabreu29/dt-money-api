@@ -39,11 +39,11 @@ describe('create transaction', () => {
         expect(result.value?.transactions).toHaveLength(2)
         expect(result.value?.transactions).toEqual([
             expect.objectContaining({
-                description: 'TypeScript'
+                description: 'JavaScript'
             }),
             
             expect.objectContaining({
-                description: 'JavaScript'
+                description: 'TypeScript'
             }),
         ])
     }) 
