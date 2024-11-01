@@ -1,70 +1,76 @@
-import { Transaction } from "@prisma/client";
-import { CreateTransactionData, TransactionRepository } from "../transaction-repository";
-import { randomUUID } from "crypto";
+import { randomUUID } from 'node:crypto'
+import type { Transaction } from '@prisma/client'
+import type {
+  CreateTransactionData,
+  TransactionRepository,
+} from '../transaction-repository'
 
 export class InMemoryTransactionsRepository implements TransactionRepository {
-    public transactions: Transaction[] = []
+  public transactions: Transaction[] = []
 
-    async create(data: CreateTransactionData) {
-        const createTransaction: Transaction = {
-            id: randomUUID(),
-            category: data.category,
-            description: data.description,
-            price: data.price,
-            type: data.type,
-            startDate: new Date()
-        }
-
-        this.transactions.push(createTransaction)
-
-        return createTransaction
+  async create(data: CreateTransactionData) {
+    const createTransaction: Transaction = {
+      id: randomUUID(),
+      category: data.category,
+      description: data.description,
+      price: data.price,
+      type: data.type,
+      startDate: new Date(),
     }
 
+    this.transactions.push(createTransaction)
 
-    async findById(id: string) {
-        const findTransactionById = this.transactions.find(transaction => {
-            return transaction.id === id
-        })
+    return createTransaction
+  }
 
-        if (!findTransactionById) {
-            return null
-        }
+  async findById(id: string) {
+    const findTransactionById = this.transactions.find((transaction) => {
+      return transaction.id === id
+    })
 
-        return findTransactionById
+    if (!findTransactionById) {
+      return null
     }
 
-   async findByDescription (description: string) {
-        const findTransactionByDescription = this.transactions.find(transaction => {
-            return transaction.description === description
-        })
+    return findTransactionById
+  }
 
-        if (!findTransactionByDescription) {
-            return null
-        }
+  async findByDescription(description: string) {
+    const findTransactionByDescription = this.transactions.find(
+      (transaction) => {
+        return transaction.description === description
+      },
+    )
 
-        return findTransactionByDescription
-    }   
-
-    async findMany() {
-        return this.transactions
+    if (!findTransactionByDescription) {
+      return null
     }
 
-    async searchMany(query: string) {
-        const searchManyTransactions = this.transactions.sort((a, b) => {
-            return b.startDate.getTime() - a.startDate.getTime()
-        }).filter(transaction => {
-            return transaction.description.includes(query)
-        })
+    return findTransactionByDescription
+  }
 
-        return searchManyTransactions
-    }
+  async findMany() {
+    return this.transactions
+  }
 
-   async remove(id: string): Promise<void> {
-        const findIndexTransaction = this.transactions.findIndex(transaction => {
-            return transaction.id === id
-        })
-        console.log(findIndexTransaction)
+  async searchMany(query: string) {
+    const searchManyTransactions = this.transactions
+      .sort((a, b) => {
+        return b.startDate.getTime() - a.startDate.getTime()
+      })
+      .filter((transaction) => {
+        return transaction.description.includes(query)
+      })
 
-        this.transactions.splice(findIndexTransaction, 1)
-   }
+    return searchManyTransactions
+  }
+
+  async remove(id: string): Promise<void> {
+    const findIndexTransaction = this.transactions.findIndex((transaction) => {
+      return transaction.id === id
+    })
+    console.log(findIndexTransaction)
+
+    this.transactions.splice(findIndexTransaction, 1)
+  }
 }

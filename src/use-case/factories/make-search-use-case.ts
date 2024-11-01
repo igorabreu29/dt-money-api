@@ -1,9 +1,9 @@
-import { PrismaTransactionRepository } from "../../repositories/prisma/prisma-transactions-repository";
-import { SearchTransactionsUseCase } from "../search";
+import { PrismaTransactionRepository } from '../../repositories/prisma/prisma-transactions-repository'
+import { SearchTransactionsUseCase } from '../search'
 
 export function makeSearchUseCase() {
-    const transactionRepository = new PrismaTransactionRepository()
-    const useCase = new SearchTransactionsUseCase(transactionRepository)
+  const transactionRepository = new PrismaTransactionRepository()
+  const useCase = new SearchTransactionsUseCase(transactionRepository)
 
-    return useCase
+  return useCase
 }
