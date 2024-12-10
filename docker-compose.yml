@@ -1,0 +1,36 @@
+services:
+  postgres: 
+    container_name: dt-money-db
+    image: bitnami/postgresql:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - 'db:/var/lib/postgresql/data'
+    networks:
+      - dt-money
+
+  dt-money:
+    build:
+     context: .
+    container_name: dt-money-api
+    ports:
+      - 3333:3333
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      - NODE_ENV=dev
+      - PORT=3333
+    depends_on:
+      - postgres
+    networks:
+      - dt-money
+    
+networks:
+  dt-money:
+    driver: bridge
+
+volumes:
+  db:

@@ -19,5 +19,7 @@ app.setErrorHandler((err, _, res) => {
     })
   }
 
+  console.log(err)
+
   return res.status(500).send({ message: 'Internal Server Error.' })
 })
